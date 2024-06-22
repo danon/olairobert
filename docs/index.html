@@ -1,0 +1,294 @@
+
+<html>
+<head>
+  <title>Wesele Oli i Roberta</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          padding: 0;
+          margin: 0;
+          background-color: rgb(249, 250, 251);
+      }
+
+      .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgb(251, 251, 251);
+          background-image: url('background.jpg');
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          opacity: 1.0;
+          transition: opacity 700ms;
+      }
+  </style>
+</head>
+<body>
+<div class="overlay">
+</div>
+<div class="all" style="display:none;">
+  <style>
+      .images {
+          padding: 15px;
+          display: flex;
+          flex-wrap: wrap;
+          box-sizing: border-box;
+      }
+
+      img.photo {
+          width: 33%;
+          height: 150px;
+          object-fit: cover;
+      }
+
+      img.photo[data-src] {
+          visibility: hidden;
+      }
+
+      .photo-preview {
+          display: none;
+      }
+
+      .photo-preview.open {
+          display: flex;
+          position: fixed;
+          align-items: center;
+          justify-content: center;
+          top: 0;
+          left: 0;
+          height: 100%;
+          box-sizing: border-box;
+          width: 100%;
+          background-color: black;
+          z-index: 2;
+      }
+
+      .photo-preview .close {
+          position: absolute;
+          right: 10px;
+          top: 9px;
+          width: 35px;
+          height: 35px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 1.5em;
+      }
+
+      .photo-preview img {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+      }
+  </style>
+
+  <div class="images">
+    <img src="images2/1719084064.1.jpg" alt="images2/1719084064.1.jpg" class="photo"/>
+    <img src="images2/1719084064.0.jpg" alt="images2/1719084064.0.jpg" class="photo"/>
+    <img src="images2/1719084054.3.jpg" alt="images2/1719084054.3.jpg" class="photo"/>
+    <img src="images2/1719084054.2.jpg" alt="images2/1719084054.2.jpg" class="photo"/>
+    <img src="images2/1719084054.1.jpg" alt="images2/1719084054.1.jpg" class="photo"/>
+    <img src="images2/1719084054.0.jpg" alt="images2/1719084054.0.jpg" class="photo"/>
+    <img src="images2/1719084045.1.jpg" alt="images2/1719084045.1.jpg" class="photo"/>
+    <img src="images2/1719084045.0.jpg" alt="images2/1719084045.0.jpg" class="photo"/>
+  </div>
+
+  <div class="photo-preview">
+    <img>
+    <div class="close">
+      <i class="fa-solid fa-times"></i>
+    </div>
+  </div>
+
+  <script>
+    let openForScroll = false;
+
+    function load(image, images, callback) {
+      if (image.getBoundingClientRect().top < window.innerHeight) {
+        images.shift();
+        image.onload = image.onerror = callback;
+        image.src = image.dataset.src;
+        delete image.dataset.src;
+      } else {
+        openForScroll = true;
+      }
+    }
+
+    function loadNextImage(images) {
+      if (images.length === 0) {
+        return;
+      }
+      requestIdleCallback(() => {
+        load(images[0], images, () => loadNextImage(images));
+      });
+    }
+
+    function imageSrc(image) {
+      if (typeof image.dataset.src === "undefined") {
+        return image.src;
+      }
+      return image.dataset.src;
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+      const images = Array.from(document.querySelectorAll(".images img[data-src]"));
+      loadNextImage(images);
+      window.addEventListener("scroll", () => {
+        if (openForScroll) {
+          openForScroll = false;
+          loadNextImage(images);
+        }
+      });
+
+      const element = document.querySelector(".photo-preview");
+
+      Array.from(document.querySelectorAll(".images .photo")).forEach(image => {
+        image.addEventListener("click", function () {
+          element.querySelector("img").src = imageSrc(image);
+          element.classList.toggle("open", true);
+        });
+      });
+
+      document.querySelector(".close").addEventListener("click", () => {
+        element.classList.toggle("open", false);
+        element.querySelector("img").removeAttribute("src");
+      });
+    });
+  </script>
+  <style>
+      .drawer {
+          position: fixed;
+          width: 100%;
+          box-sizing: border-box;
+          transition: bottom 0.5s;
+          bottom: 0;
+          border-top-left-radius: 25px;
+          border-top-right-radius: 25px;
+          background: white;
+          box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+          border: 1px solid #eee;
+          padding: 25px 15px;
+          z-index: 1;
+      }
+
+      .hidden-drawer {
+          z-index: 2;
+      }
+
+      .previews {
+          display: flex;
+      }
+
+      .preview {
+          background-size: contain;
+          background-repeat: no-repeat;
+          margin-right: 15px;
+      }
+
+      .visible {
+          margin-bottom: 15px;
+          width: 100px;
+          height: 100px;
+          border: 1px solid #333;
+          background-size: cover;
+      }
+
+      small {
+          opacity: 0.7;
+          font-size: 0.8em;
+      }
+
+      form, p {
+          margin: 0;
+      }
+
+      .drawer.closed {
+          bottom: -260px;
+      }
+  </style>
+
+  <script>
+    function openDrawer() {
+      document.querySelector(".hidden-drawer").classList.toggle("closed", false);
+    }
+  </script>
+
+  <div class="drawer" style="text-align:center;" onClick="openDrawer()">
+    <i class="fa fa-plus"></i>
+    Dodaj
+  </div>
+
+  <div class="drawer hidden-drawer closed">
+    <form action="http://192.168.1.23:8081/upload" method="POST" enctype="multipart/form-data">
+      <div style="display:flex;justify-content:space-between; margin-bottom:15px;">
+        <p>Wrzuć zdjęcie: <small>(max. 10MB)</small></p>
+        <div>
+          <button type="submit" disabled class="upload-button">
+            Wyślij
+            <i class="fa-solid fa-arrow-up"></i>
+          </button>
+        </div>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <i class="fa fa-plus"></i>
+        <input type="file" name="photos[]" onchange="upload(event)" accept="image/jpeg" multiple="multiple">
+      </div>
+      <div class="previews">
+      </div>
+      <small>(tylko: .jpg, .jpeg)</small>
+    </form>
+
+    <script type="text/javascript">
+      function upload(event) {
+        const uploadButton = document.querySelector(".upload-button");
+        uploadButton.setAttribute("disabled", "disabled");
+        const fileUploadInput = event.target;
+        if (!fileUploadInput.value) {
+          return;
+        }
+        for (const image of fileUploadInput.files) {
+          if (!image.type.includes("image")) {
+            return alert("Możesz wrzucić tylko zdjęcia.");
+          }
+          if (image.type !== "image/jpeg") {
+            return alert("Możesz wrzucić tylko zdjęcia w formacie JPEG.");
+          }
+          if (image.size > 10485760) {
+            return alert("Maksymalny rozmiar zdjęcia to 10MB.");
+          }
+        }
+        const previews = document.querySelector(".previews");
+        for (const image of fileUploadInput.files) {
+          uploadButton.removeAttribute("disabled");
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(image);
+          fileReader.onload = fileReaderEvent => {
+            console.log(fileReaderEvent.target.result);
+            const preview = document.createElement("div");
+            preview.style.backgroundImage = `url(${fileReaderEvent.target.result})`;
+            preview.classList.toggle("preview", true);
+            preview.classList.toggle("visible", true);
+            previews.appendChild(preview);
+          };
+        }
+      }
+    </script>
+  </div>
+</div>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      document.querySelector(".all").style.display = "block";
+      document.querySelector(".overlay").style.opacity = '0.0';
+      document.querySelector(".overlay").style.pointerEvents = 'none';
+    }, 2000);
+  });
+</script>
+</body>
+</html>
