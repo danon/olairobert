@@ -27,6 +27,10 @@ readonly class Laravel
                 return response()->file(public_path('images') . DIRECTORY_SEPARATOR . $name);
             });
 
+            Route::get('/background.jpg', function () {
+                return response()->file(public_path('background.jpg'));
+            });
+
             Route::post('/upload', function (Request $request) {
                 $request->validate([
                     'photos'   => 'required',

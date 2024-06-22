@@ -10,10 +10,38 @@
           margin: 0;
           background-color: rgb(249, 250, 251);
       }
+
+      .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgb(251, 251, 251);
+          background-image: url('background.jpg');
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          opacity: 1.0;
+          transition: opacity 700ms;
+      }
   </style>
 </head>
 <body>
-@include('photos')
-@include('upload')
+<div class="overlay">
+</div>
+<div class="all" style="display:none;">
+  @include('photos')
+  @include('upload')
+</div>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      document.querySelector(".all").style.display = "block";
+      document.querySelector(".overlay").style.opacity = '0.0';
+      document.querySelector(".overlay").style.pointerEvents = 'none';
+    }, 2000);
+  });
+</script>
 </body>
 </html>
