@@ -3,6 +3,7 @@
         position: fixed;
         width: 100%;
         box-sizing: border-box;
+        transition: bottom 0.5s;
         bottom: 0;
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
@@ -10,6 +11,11 @@
         box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         border: 1px solid #eee;
         padding: 25px 15px;
+        z-index: 1;
+    }
+
+    .hidden-drawer {
+        z-index: 2;
     }
 
     .previews {
@@ -38,9 +44,24 @@
     form, p {
         margin: 0;
     }
+
+    .drawer.closed {
+        bottom: -260px;
+    }
 </style>
 
-<div class="drawer">
+<script>
+  function openDrawer() {
+    document.querySelector(".hidden-drawer").classList.toggle("closed", false);
+  }
+</script>
+
+<div class="drawer" style="text-align:center;" onClick="openDrawer()">
+  <i class="fa fa-plus"></i>
+  Dodaj
+</div>
+
+<div class="drawer hidden-drawer closed">
   <form action="{{ $uploadUrl }}" method="POST" enctype="multipart/form-data">
     <div style="display:flex;justify-content:space-between; margin-bottom:15px;">
       <p>Wrzuć zdjęcie: <small>(max. 10MB)</small></p>
