@@ -19,7 +19,7 @@ readonly class Laravel
         $builder->withRouting(function (): void {
             Route::get('/', fn() => view('index', [
                 'uploadUrl' => route('images.store'),
-                'images'    => $this->images(),
+                'images'    => \iterator_to_array($this->images()),
             ]))
                 ->name('images.index');
 

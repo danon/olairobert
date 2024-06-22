@@ -53,19 +53,22 @@
         object-fit: contain;
     }
 </style>
-<div class="images">
-  @forelse($images as $index => $image)
-    @if ($index < 20)
-      <img src="{{$image}}" alt="{{$image}}" class="photo"/>
-    @else
-      <img data-src="{{$image}}" data-id="{{$index}}" alt="{{$image}}" class="photo"/>
-    @endif
-  @empty
-    <h4 style="text-align:center; opacity:0.5; margin-top:25vh;">
-      Wrzuć pierwsze zdjęcie!
-    </h4>
-  @endforelse
-</div>
+
+@if (\count($images) > 0)
+  <div class="images">
+    @foreach($images as $index => $image)
+      @if ($index < 20)
+        <img src="{{$image}}" alt="{{$image}}" class="photo"/>
+      @else
+        <img data-src="{{$image}}" data-id="{{$index}}" alt="{{$image}}" class="photo"/>
+      @endif
+    @endforeach
+  </div>
+@else
+  <h4 style="text-align:center; opacity:0.5; margin-top:25vh;">
+    Wrzuć pierwsze zdjęcie!
+  </h4>
+@endif
 
 <div class="photo-preview">
   <img>
