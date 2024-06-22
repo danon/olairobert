@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+use Plast\Laravel\Bootstrap\Laravel;
+use Symfony\Component\Console\Input\ArgvInput;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$laravel = new Laravel(__DIR__);
+exit($laravel->application->handleCommand(new ArgvInput));

@@ -8,3 +8,7 @@ composer.phar
 
 # Laravel
 laravel/storage/logs/
+laravel/*.sqlite
+
+# Upload
+laravel/public/images/
