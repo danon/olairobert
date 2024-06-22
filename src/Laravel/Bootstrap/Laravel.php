@@ -28,9 +28,16 @@ readonly class Laravel
             });
 
             Route::post('/upload', function (Request $request) {
-                $request->validate(['image' => 'required|image|mimes:jpeg,jpg,png|max:10240']);
-                $imageName = \time() . '.' . $request->file('image')->extension();
-                $request->image->move(public_path('images'), $imageName);
+                $request->validate([
+                    'photos'   => 'required',
+                    'photos.*' => 'image|mimes:jpeg,jpg|max:10240',
+                ]);
+                if ($request->hasFile('photos')) {
+                    foreach ($request->file('photos') as $index => $photo) {
+                        $imageName = \time() . '.' . $index . '.' . $photo->extension();
+                        $photo->move(public_path('images'), $imageName);
+                    }
+                }
                 return redirect()
                     ->back()
                     ->with('success', 'File has been uploaded');
