@@ -1,13 +1,15 @@
 <style>
     .images {
         padding: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        box-sizing: border-box;
     }
 
     img.photo {
-        background: white;
-        max-width: 150px;
-        max-height: 150px;
-        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        width: 33%;
+        height: 150px;
+        object-fit: cover;
     }
 
     img.photo[data-src] {
@@ -29,7 +31,7 @@
         box-sizing: border-box;
         width: 100%;
         background-color: black;
-        padding-bottom: 140px;
+        z-index: 2;
     }
 
     .photo-preview .close {
