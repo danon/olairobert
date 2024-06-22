@@ -100,6 +100,13 @@
     });
   }
 
+  function imageSrc(image) {
+    if (typeof image.dataset.src === "undefined") {
+      return image.src;
+    }
+    return image.dataset.src;
+  }
+
   window.addEventListener("DOMContentLoaded", function () {
     const images = Array.from(document.querySelectorAll(".images img[data-src]"));
     loadNextImage(images);
@@ -114,14 +121,14 @@
 
     Array.from(document.querySelectorAll(".images .photo")).forEach(image => {
       image.addEventListener("click", function () {
-        element.querySelector("img").src = image.src;
+        element.querySelector("img").src = imageSrc(image);
         element.classList.toggle("open", true);
       });
     });
 
     document.querySelector(".close").addEventListener("click", () => {
-      element.querySelector("img").src = null;
       element.classList.toggle("open", false);
+      element.querySelector("img").removeAttribute("src");
     });
   });
 </script>
