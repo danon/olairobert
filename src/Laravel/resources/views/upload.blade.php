@@ -66,7 +66,7 @@
     <div style="display:flex;justify-content:space-between; margin-bottom:15px;">
       <p>Wrzuć zdjęcie: <small>(max. 10MB)</small></p>
       <div>
-        <button type="submit" class="upload-button">
+        <button type="submit" disabled class="upload-button">
           Wyślij
           <i class="fa-solid fa-arrow-up"></i>
         </button>
@@ -83,6 +83,8 @@
 
   <script type="text/javascript">
     function upload(event) {
+      const uploadButton = document.querySelector(".upload-button");
+      uploadButton.setAttribute("disabled", "disabled");
       const fileUploadInput = event.target;
       if (!fileUploadInput.value) {
         return;
@@ -100,6 +102,7 @@
       }
       const previews = document.querySelector(".previews");
       for (const image of fileUploadInput.files) {
+        uploadButton.removeAttribute("disabled");
         const fileReader = new FileReader();
         fileReader.readAsDataURL(image);
         fileReader.onload = fileReaderEvent => {
