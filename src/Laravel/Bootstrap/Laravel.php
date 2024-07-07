@@ -23,7 +23,7 @@ readonly class Laravel
             ]))
                 ->name('images.index');
 
-            Route::get('/images2/{name}', function (Request $request, string $name) {
+            Route::get('/images/{name}', function (Request $request, string $name) {
                 return response()->file(public_path('images') . DIRECTORY_SEPARATOR . $name);
             });
 
@@ -66,7 +66,7 @@ readonly class Laravel
             if (\in_array($fileName, ['.', '..'], true)) {
                 continue;
             }
-            yield "images2/$fileName";
+            yield "images/$fileName";
         }
     }
 }
