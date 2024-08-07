@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Rewrite rule for images
+RewriteCond %{REQUEST_URI} \.jpe?g$ [NC]
+RewriteRule ^/(.*)$ /laravel/public/$1 [L]
+
+# Rewrite rule for all other requests
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php [L]
