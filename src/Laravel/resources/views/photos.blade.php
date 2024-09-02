@@ -34,8 +34,26 @@
         z-index: 2;
     }
 
-    .photo-preview .close {
+    .photo-preview .icon {
         position: absolute;
+        color: white;
+        font-size: 1.5em;
+        text-shadow: rgba(0, 0, 0, 0.5) -1px 4px 5px;
+    }
+
+    .photo-preview .icon.change {
+        top: 50%;
+    }
+
+    .photo-preview .icon.change.prev {
+        left: 15px;
+    }
+
+    .photo-preview .icon.change.next {
+        right: 15px;
+    }
+
+    .photo-preview .close {
         right: 10px;
         top: 9px;
         width: 35px;
@@ -43,8 +61,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
-        font-size: 1.5em;
     }
 
     .photo-preview img {
@@ -57,7 +73,7 @@
 @if (\count($images) > 0)
   <div class="images">
     @foreach($images as $index => $image)
-      @if ($index < 20)
+      @if ($index < 0)
         <img src="{{$image}}" alt="{{$image}}" class="photo"/>
       @else
         <img data-src="{{$image}}" alt="{{$image}}" class="photo"/>
@@ -72,8 +88,14 @@
 
 <div class="photo-preview">
   <img>
-  <div class="close">
+  <div class="icon close">
     <i class="fa-solid fa-times"></i>
+  </div>
+  <div class="icon change prev">
+    <i class="fa-solid fa-chevron-left"></i>
+  </div>
+  <div class="icon change next">
+    <i class="fa-solid fa-chevron-right"></i>
   </div>
 </div>
 
@@ -108,27 +130,48 @@
   }
 
   window.addEventListener("DOMContentLoaded", function () {
-    const images = Array.from(document.querySelectorAll(".images img[data-src]"));
-    loadNextImage(images);
+    const notYetLoadedImages = Array.from(document.querySelectorAll(".images img[data-src]"));
+    loadNextImage(notYetLoadedImages);
     window.addEventListener("scroll", () => {
       if (openForScroll) {
         openForScroll = false;
-        loadNextImage(images);
+        loadNextImage(notYetLoadedImages);
       }
     });
 
-    const element = document.querySelector(".photo-preview");
+    const photoPreview = document.querySelector(".photo-preview");
+    const images = document.querySelectorAll(".images .photo");
 
-    Array.from(document.querySelectorAll(".images .photo")).forEach(image => {
-      image.addEventListener("click", function () {
-        element.querySelector("img").src = imageSrc(image);
-        element.classList.toggle("open", true);
-      });
+    let currentlyPreviewedImage = null;
+
+    function previewImage(index) {
+      if (!images.hasOwnProperty(index)) {
+        return;
+      }
+      photoPreview.querySelector("img").src = imageSrc(images[index]);
+      photoPreview.classList.toggle("open", true);
+      currentlyPreviewedImage = index;
+    }
+
+    Array.from(images).forEach((image, index) => {
+      image.addEventListener("click", () => previewImage(index));
     });
 
     document.querySelector(".close").addEventListener("click", () => {
-      element.classList.toggle("open", false);
-      element.querySelector("img").removeAttribute("src");
+      photoPreview.classList.toggle("open", false);
+      photoPreview.querySelector("img").removeAttribute("src");
+      currentlyPreviewedImage = null;
+    });
+
+    Array.from(document.querySelectorAll('.icon.change')).forEach(changeIcon => {
+      changeIcon.addEventListener('click', event => {
+        const isDirectionNext = changeIcon.classList.contains('next');
+        if (isDirectionNext) {
+          previewImage(currentlyPreviewedImage + 1);
+        } else {
+          previewImage(currentlyPreviewedImage - 1);
+        }
+      });
     });
   });
 </script>
