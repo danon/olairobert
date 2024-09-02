@@ -42,15 +42,20 @@
     }
 
     .photo-preview .icon.change {
-        top: 50%;
+        top: calc(50% - 100px);
+        height: 200px;
+        padding-top: 87px;
+        width: 100px;
     }
 
     .photo-preview .icon.change.prev {
         left: 15px;
+        text-align: left;
     }
 
     .photo-preview .icon.change.next {
         right: 15px;
+        text-align: right;
     }
 
     .photo-preview .close {
