@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\ApplicationBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Plast\Image;
 
 readonly class Laravel
 {
@@ -19,12 +20,16 @@ readonly class Laravel
         $builder->withRouting(function (): void {
             Route::get('/', fn() => view('index', [
                 'uploadUrl' => route('images.store'),
-                'images'    => \iterator_to_array($this->images()),
+                'images'    => \iterator_to_array($this->thumbnails()),
             ]))
                 ->name('images.index');
 
             Route::get('/images/{name}', function (Request $request, string $name) {
                 return response()->file(public_path('images') . DIRECTORY_SEPARATOR . $name);
+            });
+
+            Route::get('/thumbnails/{name}', function (Request $request, string $name) {
+                return response()->file(public_path('thumbnails') . DIRECTORY_SEPARATOR . $name);
             });
 
             Route::get('/background.jpg', function () {
@@ -37,9 +42,12 @@ readonly class Laravel
                     'photos.*' => 'image|mimes:jpeg,jpg|max:10240',
                 ]);
                 if ($request->hasFile('photos')) {
-                    foreach ($request->file('photos') as $index => $photo) {
-                        $imageName = \time() . '.' . $index . '.' . $photo->extension();
-                        $photo->move(public_path('images'), $imageName);
+                    foreach ($request->file('photos') as $photo) {
+                        $name = \uniqId() . '.' . $photo->extension();
+                        $photo->move(public_path('images'), $name);
+                        (new Image())->saveThumbnailAs(
+                            public_path('images') . DIRECTORY_SEPARATOR . $name,
+                            public_path('thumbnails') . DIRECTORY_SEPARATOR . $name);
                     }
                 }
                 return redirect()
@@ -59,14 +67,14 @@ readonly class Laravel
             \dirName(__DIR__));
     }
 
-    private function images(): iterable
+    private function thumbnails(): iterable
     {
-        $fileNames = \scanDir(public_path('images'));
+        $fileNames = \scanDir(public_path('thumbnails'));
         foreach (\array_reverse($fileNames) as $fileName) {
             if (\in_array($fileName, ['.', '..'], true)) {
                 continue;
             }
-            yield "images/$fileName";
+            yield "thumbnails/$fileName";
         }
     }
 }

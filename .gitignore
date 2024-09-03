@@ -12,3 +12,4 @@ laravel/*.sqlite
 
 # Upload
 laravel/public/images/
+laravel/public/thumbnails/

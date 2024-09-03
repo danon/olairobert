@@ -153,7 +153,7 @@
       if (!images.hasOwnProperty(index)) {
         return;
       }
-      photoPreview.querySelector("img").src = imageSrc(images[index]);
+      photoPreview.querySelector("img").src = imageSrc(images[index]).replace('thumbnails', 'images');
       photoPreview.classList.toggle("open", true);
       currentlyPreviewedImage = index;
     }
