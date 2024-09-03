@@ -118,6 +118,10 @@
     }
   }
 
+  window.requestIdleCallback = window.requestIdleCallback || function (callback) {
+    setTimeout(callback, 10);
+  }
+  
   function loadNextImage(images) {
     if (images.length === 0) {
       return;
