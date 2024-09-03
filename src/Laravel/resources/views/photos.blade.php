@@ -134,7 +134,7 @@
     return image.dataset.src;
   }
 
-  window.addEventListener("DOMContentLoaded", function () {
+  whenReady(function () {
     const notYetLoadedImages = Array.from(document.querySelectorAll(".images img[data-src]"));
     loadNextImage(notYetLoadedImages);
     window.addEventListener("scroll", () => {

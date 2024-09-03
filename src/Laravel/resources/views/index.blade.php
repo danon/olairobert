@@ -30,12 +30,23 @@
 <body>
 <div class="overlay">
 </div>
+<script>
+  function whenReady(callback) {
+    if (window.document.readyState !== 'loading') {
+      callback();
+    } else {
+      window.addEventListener("DOMContentLoaded", () => {
+        callback();
+      });
+    }
+  }
+</script>
 <div class="all" style="display:none;">
   @include('photos')
   @include('upload')
 </div>
 <script>
-  window.addEventListener("DOMContentLoaded", () => {
+  whenReady(() => {
     setTimeout(() => {
       document.querySelector(".all").style.display = "block";
       document.querySelector(".overlay").style.opacity = '0.0';
