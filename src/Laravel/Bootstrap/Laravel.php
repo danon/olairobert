@@ -4,8 +4,10 @@ namespace Plast\Laravel\Bootstrap;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\ApplicationBuilder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Plast\Image;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 readonly class Laravel
 {
@@ -25,11 +27,11 @@ readonly class Laravel
                 ->name('images.index');
 
             Route::get('/images/{name}', function (Request $request, string $name) {
-                return response()->file(public_path('images') . DIRECTORY_SEPARATOR . $name);
+                return $this->respondFile(public_path('images') . DIRECTORY_SEPARATOR . $name);
             });
 
             Route::get('/thumbnails/{name}', function (Request $request, string $name) {
-                return response()->file(public_path('thumbnails') . DIRECTORY_SEPARATOR . $name);
+                return $this->respondFile(public_path('thumbnails') . DIRECTORY_SEPARATOR . $name);
             });
 
             Route::get('/background.jpg', function () {
@@ -57,6 +59,14 @@ readonly class Laravel
                 ->name('images.store');
         });
         $this->application = $builder->create();
+    }
+
+    private function respondFile(string $path): BinaryFileResponse|Response
+    {
+        if (\file_exists($path)) {
+            return response()->file($path);
+        }
+        return response(status:404);
     }
 
     private function app(string $laravelPath): Application
