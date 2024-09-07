@@ -41,7 +41,7 @@ readonly class Laravel
             Route::post('/upload', function (Request $request) {
                 $request->validate([
                     'photos'   => 'required',
-                    'photos.*' => 'image|mimes:jpeg,jpg|max:10240',
+                    'photos.*' => 'max:10240',
                 ]);
                 if ($request->hasFile('photos')) {
                     foreach ($request->file('photos') as $photo) {

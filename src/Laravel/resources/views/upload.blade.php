@@ -78,7 +78,6 @@
     </div>
     <div class="previews">
     </div>
-    <small>(tylko: .jpg, .jpeg)</small>
   </form>
 
   <script type="text/javascript">
@@ -90,11 +89,10 @@
         return;
       }
       for (const image of fileUploadInput.files) {
-        if (!image.type.includes("image")) {
-          return alert("Możesz wrzucić tylko zdjęcia.");
-        }
-        if (image.type !== "image/jpeg") {
-          return alert("Możesz wrzucić tylko zdjęcia w formacie JPEG.");
+        if (image.type !== '') {
+          if (!image.type.includes("image")) {
+            return alert("Możesz wrzucić tylko zdjęcia.");
+          }
         }
         if (image.size > 10485760) {
           return alert("Maksymalny rozmiar zdjęcia to 10MB.");
