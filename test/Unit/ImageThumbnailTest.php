@@ -21,13 +21,13 @@ class ImageThumbnailTest extends TestCase
     #[DoesNotPerformAssertions]
     public function resizeHorizontal(): void
     {
-        $this->image->saveThumbnailAs('resources/starryNight.png', 'resources/starryNight.expected.png');
+        $this->image->saveThumbnailAsWebp('resources/starryNight.png', 'resources/starryNight.expected.webp');
     }
 
     #[Test]
     #[DoesNotPerformAssertions]
     public function resizeVertical(): void
     {
-        $this->image->saveThumbnailAs('resources/cafeTerrace.png', 'resources/cafeTerrace.expected.png');
+        $this->image->saveThumbnailAsWebp('resources/cafeTerrace.png', 'resources/cafeTerrace.expected.webp');
     }
 }

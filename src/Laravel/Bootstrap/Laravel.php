@@ -45,11 +45,15 @@ readonly class Laravel
                 ]);
                 if ($request->hasFile('photos')) {
                     foreach ($request->file('photos') as $photo) {
-                        $name = \uniqId() . '.' . $photo->extension();
-                        $photo->move(public_path('images'), $name);
-                        (new Image())->saveThumbnailAs(
-                            public_path('images') . DIRECTORY_SEPARATOR . $name,
-                            public_path('thumbnails') . DIRECTORY_SEPARATOR . $name);
+                        $filename = \uniqId();
+                        $name = $filename . '.' . $photo->extension();
+                        $photo->move(public_path('originals'), $name);
+                        (new Image())->saveThumbnailAsWebp(
+                            public_path('originals') . DIRECTORY_SEPARATOR . $name,
+                            public_path('thumbnails') . DIRECTORY_SEPARATOR . $filename . '.webp');
+                        (new Image())->saveOriginalAsWebp(
+                            public_path('originals') . DIRECTORY_SEPARATOR . $name,
+                            public_path('images') . DIRECTORY_SEPARATOR . $filename . '.webp');
                     }
                 }
                 return redirect()

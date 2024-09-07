@@ -11,5 +11,6 @@ laravel/storage/logs/
 laravel/*.sqlite
 
 # Upload
+laravel/public/originals/
 laravel/public/images/
 laravel/public/thumbnails/
