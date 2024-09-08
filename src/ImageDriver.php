@@ -3,7 +3,7 @@ namespace Plast;
 
 use Intervention\Image\ImageManager;
 
-readonly class Image
+readonly class ImageDriver
 {
     private ImageManager $driver;
 

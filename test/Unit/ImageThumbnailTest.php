@@ -5,23 +5,23 @@ use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Plast\Image;
+use Plast\ImageDriver;
 
 class ImageThumbnailTest extends TestCase
 {
-    private Image $image;
+    private ImageDriver $driver;
 
     #[Before]
     public function initialize(): void
     {
-        $this->image = new Image();
+        $this->driver = new ImageDriver();
     }
 
     #[Test]
     #[DoesNotPerformAssertions]
     public function resizeHorizontal(): void
     {
-        $this->image->saveAsWebp(
+        $this->driver->saveAsWebp(
             'resources/starryNight.png',
             'resources/starryNight.expected.t.webp',
             'resources/starryNight.expected.o.webp');
@@ -31,7 +31,7 @@ class ImageThumbnailTest extends TestCase
     #[DoesNotPerformAssertions]
     public function resizeVertical(): void
     {
-        $this->image->saveAsWebp(
+        $this->driver->saveAsWebp(
             'resources/cafeTerrace.png',
             'resources/cafeTerrace.expected.t.webp',
             'resources/cafeTerrace.expected.o.webp',

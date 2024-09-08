@@ -6,7 +6,6 @@ use Illuminate\Foundation\Configuration\ApplicationBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
-use Plast\Image;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 readonly class Laravel
@@ -44,11 +43,11 @@ readonly class Laravel
                     'photos.*' => 'max:10240',
                 ]);
                 if ($request->hasFile('photos')) {
-                    $image = new Image();
+                    $maker = new PublicImages(public_path());
                     foreach ($request->file('photos') as $photo) {
                         $filename = \uniqId() . '.' . $photo->extension();
                         $photo->move(public_path('originals'), $filename);
-                        $this->saveInOptimalFormat($image, $filename);
+                        $maker->saveInOptimalFormat($filename);
                     }
                 }
                 return redirect()
@@ -90,26 +89,5 @@ readonly class Laravel
     private function path(string $publicPath, string $filename): string
     {
         return public_path($publicPath) . DIRECTORY_SEPARATOR . $filename;
-    }
-
-    private function saveInOptimalFormat(Image $image, string $filename): void
-    {
-        $this->createThumbnailsAndCovertWebp($image,
-            $filename,
-            $this->mapExtension($filename, 'webp'));
-    }
-
-    private function createThumbnailsAndCovertWebp(Image $image, string $fileOriginal, string $fileWebp): void
-    {
-        $image->saveAsWebp(
-            $this->path('originals', $fileOriginal),
-            $this->path('thumbnails', $fileWebp),
-            $this->path('images', $fileWebp));
-    }
-
-    private function mapExtension(string $filename, string $extension): string
-    {
-        $extensionLength = \strLen(\pathInfo($filename, \PATHINFO_EXTENSION));
-        return \subStr($filename, 0, -$extensionLength) . $extension;
     }
 }
