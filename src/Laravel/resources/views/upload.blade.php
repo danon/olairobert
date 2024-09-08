@@ -138,7 +138,7 @@
         const percentCompleted = Math.round(event.loaded / event.total * 100.0);
         progressBar.style.display = 'block';
         if (percentCompleted === 100) {
-          track.innerHTML = 'Przetwarzanie...';
+          track.innerHTML = 'To potrwa jeszcze chwilkę...';
         } else {
           track.innerHTML = percentCompleted + '%';
         }
