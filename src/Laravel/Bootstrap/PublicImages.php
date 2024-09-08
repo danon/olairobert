@@ -12,14 +12,14 @@ readonly class PublicImages
         $this->driver = new ImageDriver();
     }
 
-    public function saveInOptimalFormat(string $filename): void
+    public function saveInOptimalFormat(string $filename): array
     {
-        $this->createThumbnailsAndCovertWebp($filename, $this->mapExtension($filename, 'webp'));
+        return $this->createThumbnailsAndCovertWebp($filename, $this->mapExtension($filename, 'webp'));
     }
 
-    private function createThumbnailsAndCovertWebp(string $fileOriginal, string $fileWebp): void
+    private function createThumbnailsAndCovertWebp(string $fileOriginal, string $fileWebp): array
     {
-        $this->driver->saveAsWebp(
+        return $this->driver->saveAsWebp(
             $this->path('originals', $fileOriginal),
             $this->path('thumbnails', $fileWebp),
             $this->path('images', $fileWebp));

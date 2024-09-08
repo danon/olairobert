@@ -16,10 +16,23 @@ readonly class ImageDriver
         string $input,
         string $thumbnailDestination,
         string $originalDestination,
-    ): void
+    ): array
     {
+        $hasOriginal = \file_exists($originalDestination);
+        $hasThumbnail = \file_exists($thumbnailDestination);
+        if ($hasOriginal && $hasThumbnail) {
+            return [];
+        }
         $image = $this->driver->read($input);
-        $image->encodeByExtension('webp')->save($originalDestination);
-        $image->scaleDown(200, 200)->encodeByExtension('webp')->save($thumbnailDestination);
+        $results = [];
+        if (!$hasOriginal) {
+            $image->encodeByExtension('webp')->save($originalDestination);
+            $results[] = $originalDestination;
+        }
+        if (!$hasThumbnail) {
+            $image->scaleDown(200, 200)->encodeByExtension('webp')->save($thumbnailDestination);
+            $results[] = $thumbnailDestination;
+        }
+        return $results;
     }
 }
