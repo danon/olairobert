@@ -78,7 +78,7 @@
 @if (\count($images) > 0)
   <div class="images">
     @foreach($images as $index => $image)
-      @if ($index < 0)
+      @if ($index < 6)
         <img src="{{$image}}" alt="{{$image}}" class="photo"/>
       @else
         <img data-src="{{$image}}" alt="{{$image}}" class="photo"/>
