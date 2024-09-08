@@ -50,9 +50,7 @@ readonly class Laravel
                         $maker->saveInOptimalFormat($filename);
                     }
                 }
-                return redirect()
-                    ->back()
-                    ->with('success', 'File has been uploaded');
+                return \response(status:200);
             })
                 ->name('images.store');
         });
