@@ -100,6 +100,7 @@
         }
       }
       const previews = document.querySelector(".previews");
+      previews.textContent = '';
       for (const image of fileUploadInput.files) {
         uploadButton.removeAttribute("disabled");
         const fileReader = new FileReader();
