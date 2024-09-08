@@ -119,7 +119,7 @@
   }
 
   window.requestIdleCallback = window.requestIdleCallback || function (callback) {
-    setTimeout(callback, 10);
+    setTimeout(callback, 200);
   }
   
   function loadNextImage(images) {
