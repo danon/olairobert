@@ -44,11 +44,12 @@ readonly class Laravel
                     'photos.*' => 'max:10240',
                 ]);
                 if ($request->hasFile('photos')) {
+                    $image = new Image();
                     foreach ($request->file('photos') as $photo) {
                         $filename = \uniqId();
                         $name = $filename . '.' . $photo->extension();
                         $photo->move(public_path('originals'), $name);
-                        (new Image())->saveAsWebp(
+                        $image->saveAsWebp(
                             $this->path('originals', $name),
                             $this->path('thumbnails', $filename . '.webp'),
                             $this->path('images', $filename . '.webp'));
