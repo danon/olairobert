@@ -27,11 +27,11 @@ readonly class Laravel
                 ->name('images.index');
 
             Route::get('/images/{name}', function (Request $request, string $name) {
-                return $this->respondFile(public_path('images') . DIRECTORY_SEPARATOR . $name);
+                return $this->respondFile($this->path('images', $name));
             });
 
             Route::get('/thumbnails/{name}', function (Request $request, string $name) {
-                return $this->respondFile(public_path('thumbnails') . DIRECTORY_SEPARATOR . $name);
+                return $this->respondFile($this->path('thumbnails', $name));
             });
 
             Route::get('/background.jpg', function () {
@@ -48,12 +48,10 @@ readonly class Laravel
                         $filename = \uniqId();
                         $name = $filename . '.' . $photo->extension();
                         $photo->move(public_path('originals'), $name);
-                        (new Image())->saveThumbnailAsWebp(
-                            public_path('originals') . DIRECTORY_SEPARATOR . $name,
-                            public_path('thumbnails') . DIRECTORY_SEPARATOR . $filename . '.webp');
-                        (new Image())->saveOriginalAsWebp(
-                            public_path('originals') . DIRECTORY_SEPARATOR . $name,
-                            public_path('images') . DIRECTORY_SEPARATOR . $filename . '.webp');
+                        (new Image())->saveAsWebp(
+                            $this->path('originals', $name),
+                            $this->path('thumbnails', $filename . '.webp'),
+                            $this->path('images', $filename . '.webp'));
                     }
                 }
                 return redirect()
@@ -90,5 +88,10 @@ readonly class Laravel
             }
             yield "thumbnails/$fileName";
         }
+    }
+
+    private function path(string $publicPath, string $filename): string
+    {
+        return public_path($publicPath) . DIRECTORY_SEPARATOR . $filename;
     }
 }

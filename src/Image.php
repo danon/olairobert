@@ -5,14 +5,24 @@ use Intervention\Image\ImageManager;
 
 class Image
 {
-    public function saveThumbnailAsWebp(string $original, string $destination): void
+    public function saveAsWebp(
+        string $input,
+        string $thumbnailDestination,
+        string $originalDestination,
+    ): void
+    {
+        $this->saveOriginalAsWebp($input, $originalDestination);
+        $this->saveThumbnailAsWebp($input, $thumbnailDestination);
+    }
+
+    private function saveThumbnailAsWebp(string $original, string $destination): void
     {
         $image = ImageManager::imagick()->read($original);
         $image->scaleDown(200, 200);
         $image->encodeByExtension('webp')->save($destination);
     }
 
-    public function saveOriginalAsWebp(string $original, string $destination): void
+    private function saveOriginalAsWebp(string $original, string $destination): void
     {
         $image = ImageManager::imagick()->read($original);
         $image->encodeByExtension('webp')->save($destination);
