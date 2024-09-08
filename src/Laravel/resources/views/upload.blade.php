@@ -131,9 +131,8 @@
     }
 
     function uploadImages() {
-
       const request = new XMLHttpRequest();
-      request.open('POST', "/upload");
+      request.open('POST', "/upload", true);
       request.upload.addEventListener('progress', function (event) {
         const percentCompleted = Math.round(event.loaded / event.total * 100.0);
         progressBar.style.display = 'block';
@@ -150,6 +149,7 @@
         previews.textContent = '';
         window.location.reload();
       });
+      request.timeout = 1000 * 60 * 5;
       request.send(inputDialogFormData(photosInput));
     }
 
