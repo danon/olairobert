@@ -20,6 +20,7 @@
 
     .previews {
         display: flex;
+        flex-wrap: wrap;
     }
 
     .preview {
