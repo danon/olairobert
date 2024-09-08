@@ -51,7 +51,7 @@
       document.querySelector(".all").style.display = "block";
       document.querySelector(".overlay").style.opacity = '0.0';
       document.querySelector(".overlay").style.pointerEvents = 'none';
-    }, 2000);
+    }, 1000);
   });
 </script>
 </body>
