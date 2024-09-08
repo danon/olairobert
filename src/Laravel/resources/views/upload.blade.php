@@ -75,14 +75,14 @@
     </div>
     <div style="margin-bottom:1rem;">
       <i class="fa fa-plus"></i>
-      <input type="file" name="photos[]" onchange="upload(event)" accept="image/jpeg" multiple="multiple">
+      <input type="file" name="photos[]" onchange="onImageSelect(event)" accept="image/jpeg" multiple="multiple">
     </div>
     <div class="previews">
     </div>
   </form>
 
   <script type="text/javascript">
-    function upload(event) {
+    function onImageSelect(event) {
       const uploadButton = document.querySelector(".upload-button");
       uploadButton.setAttribute("disabled", "disabled");
       const fileUploadInput = event.target;
