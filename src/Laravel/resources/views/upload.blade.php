@@ -147,7 +147,7 @@
         progressBar.style.display = 'none';
         photosInput.value = '';
         previews.textContent = '';
-        window.location.reload();
+        alert('Zdjęcia będą dostępne na stronie za kilka sekund, proszę odświeżyć stronę.');
       });
       request.timeout = 1000 * 60 * 5;
       request.send(inputDialogFormData(photosInput));
