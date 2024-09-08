@@ -46,13 +46,9 @@ readonly class Laravel
                 if ($request->hasFile('photos')) {
                     $image = new Image();
                     foreach ($request->file('photos') as $photo) {
-                        $fileId = \uniqId();
-                        $filename = $fileId . '.' . $photo->extension();
+                        $filename = \uniqId() . '.' . $photo->extension();
                         $photo->move(public_path('originals'), $filename);
-                        $image->saveAsWebp(
-                            $this->path('originals', $filename),
-                            $this->path('thumbnails', "$fileId.webp"),
-                            $this->path('images', "$fileId.webp"));
+                        $this->saveInOptimalFormat($image, $filename);
                     }
                 }
                 return redirect()
@@ -94,5 +90,26 @@ readonly class Laravel
     private function path(string $publicPath, string $filename): string
     {
         return public_path($publicPath) . DIRECTORY_SEPARATOR . $filename;
+    }
+
+    private function saveInOptimalFormat(Image $image, string $filename): void
+    {
+        $this->createThumbnailsAndCovertWebp($image,
+            $filename,
+            $this->mapExtension($filename, 'webp'));
+    }
+
+    private function createThumbnailsAndCovertWebp(Image $image, string $fileOriginal, string $fileWebp): void
+    {
+        $image->saveAsWebp(
+            $this->path('originals', $fileOriginal),
+            $this->path('thumbnails', $fileWebp),
+            $this->path('images', $fileWebp));
+    }
+
+    private function mapExtension(string $filename, string $extension): string
+    {
+        $extensionLength = \strLen(\pathInfo($filename, \PATHINFO_EXTENSION));
+        return \subStr($filename, 0, -$extensionLength) . $extension;
     }
 }
