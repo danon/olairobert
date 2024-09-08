@@ -20,8 +20,7 @@ readonly class Laravel
         $builder->withExceptions();
         $builder->withRouting(function (): void {
             Route::get('/', fn() => view('index', [
-                'uploadUrl' => route('images.store'),
-                'images'    => \iterator_to_array($this->thumbnails()),
+                'images' => \iterator_to_array($this->thumbnails()),
             ]))
                 ->name('images.index');
 
@@ -43,14 +42,12 @@ readonly class Laravel
                     'photos.*' => 'max:10240',
                 ]);
                 if ($request->hasFile('photos')) {
-                    $maker = new PublicImages(public_path());
                     foreach ($request->file('photos') as $photo) {
-                        $filename = \uniqId() . '.' . $photo->extension();
-                        $photo->move(public_path('originals'), $filename);
-                        $maker->saveInOptimalFormat($filename);
+                        $photo->move(
+                            public_path('originals'),
+                            \uniqId() . '.' . $photo->extension());
                     }
                 }
-                return \response(status:200);
             })
                 ->name('images.store');
         });

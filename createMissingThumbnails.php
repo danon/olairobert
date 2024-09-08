@@ -15,8 +15,8 @@ foreach ($originals as $original) {
     }
     $results = $maker->saveInOptimalFormat($original);
     foreach ($results as $result) {
-        echo "Converted $result..." . \PHP_EOL;
+        echo date('Y-m-d H:i:s') . " Converted $result..." . \PHP_EOL;
     }
 }
 
-echo 'Done.' . \PHP_EOL;
+echo date('Y-m-d H:i:s') . ' Done.' . \PHP_EOL;
