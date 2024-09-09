@@ -21,6 +21,8 @@
     .previews {
         display: flex;
         flex-wrap: wrap;
+        max-height: 60vh;
+        overflow-y: scroll;
     }
 
     .preview {
