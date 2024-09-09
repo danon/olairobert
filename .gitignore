@@ -14,3 +14,6 @@ laravel/*.sqlite
 laravel/public/originals/
 laravel/public/images/
 laravel/public/thumbnails/
+
+# Application
+counter

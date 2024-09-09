@@ -25,11 +25,31 @@
           opacity: 1.0;
           transition: opacity 700ms;
       }
+
+      .thank-you-overlay {
+          object-fit: cover;
+          position: fixed;
+          left: 0;
+          top: 0;
+          width: 100vw;
+          height: 100vh;
+          z-index: 100;
+          cursor: pointer;
+          background-color: white;
+          background-image: url('thankYou.jpg');
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+      }
   </style>
 </head>
 <body>
 <div class="overlay">
 </div>
+@if ($thankYouVisible)
+<div class="thank-you-overlay" onClick="event.target.style.display='none';">
+</div>
+@endif
 <script>
   function whenReady(callback) {
     if (window.document.readyState !== 'loading') {

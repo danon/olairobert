@@ -19,8 +19,9 @@ readonly class Laravel
         $builder->withKernels();
         $builder->withExceptions();
         $builder->withRouting(function (): void {
-            Route::get('/', fn() => view('index', [
-                'images' => \iterator_to_array($this->thumbnails()),
+            Route::get('/', fn(Request $request) => view('index', [
+                'thankYouVisible' => $this->thankYouVisible(),
+                'images'          => \iterator_to_array($this->thumbnails()),
             ]))
                 ->name('images.index');
 
@@ -34,6 +35,10 @@ readonly class Laravel
 
             Route::get('/background.jpg', function () {
                 return response()->file(public_path('background.jpg'));
+            });
+
+            Route::get('/thankYou.jpg', function () {
+                return response()->file(public_path('thankYou.jpg'));
             });
 
             Route::post('/upload', function (Request $request) {
@@ -84,5 +89,17 @@ readonly class Laravel
     private function path(string $publicPath, string $filename): string
     {
         return public_path($publicPath) . DIRECTORY_SEPARATOR . $filename;
+    }
+
+    private function thankYouVisible(): bool
+    {
+        if (file_exists('counter')) {
+            $counter = (int)file_get_contents('counter');
+        } else {
+            $counter = 0;
+        }
+        $counter++;
+        file_put_contents('counter', $counter);
+        return ($counter + 1) % 200 === 0;
     }
 }
